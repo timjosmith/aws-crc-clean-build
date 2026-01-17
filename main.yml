@@ -11,9 +11,49 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
+  CloudFrontOAC:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: crc-clean-build-oac
+        Description: OAC for CloudFront access to private S3 origin
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        DefaultRootObject: index.html
+
+        Origins:
+          - Id: S3Origin
+            DomainName: !GetAtt SiteBucket.RegionalDomainName
+            OriginAccessControlId: !Ref CloudFrontOAC
+            S3OriginConfig: {}
+
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          ForwardedValues:
+            QueryString: false
+
+        PriceClass: PriceClass_100
+
 Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
     Value: !Ref SiteBucket
 
-# No-op change to trigger redeploy and validate delete → redeploy lifecycle
+  CloudFrontDomainName:
+    Description: "CloudFront distribution domain"
+    Value: !GetAtt CloudFrontDistribution.DomainName
