@@ -1,0 +1,24 @@
+name: Destroy CloudFormation stack (manual)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::401907937551:role/crc-clean-build-gha-deploy-role
+          aws-region: eu-west-2
+
+      - name: Delete stack
+        run: aws cloudformation delete-stack --stack-name crc-clean-build
+
+      - name: Wait for deletion
+        run: aws cloudformation wait stack-delete-complete --stack-name crc-clean-build
