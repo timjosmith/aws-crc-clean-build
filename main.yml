@@ -15,3 +15,5 @@ Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
     Value: !Ref SiteBucket
+
+# No-op change to trigger redeploy and validate delete → redeploy lifecycle
