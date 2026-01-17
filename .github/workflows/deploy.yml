@@ -1,0 +1,35 @@
+name: Deploy CloudFormation (CRC clean build)
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "main.yml"
+      - ".github/workflows/deploy.yml"
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::401907937551:role/crc-clean-build-gha-deploy-role
+          aws-region: eu-west-2
+
+      - name: Validate CloudFormation template
+        run: aws cloudformation validate-template --template-body file://main.yml
+
+      - name: Deploy stack
+        run: |
+          aws cloudformation deploy \
+            --template-file main.yml \
+            --stack-name crc-clean-build \
+            --no-fail-on-empty-changeset
