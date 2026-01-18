@@ -15,11 +15,18 @@ Resources:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
       OriginAccessControlConfig:
-        Name: crc-clean-build-oac
+        Name: !Sub "${AWS::StackName}-oac"
         Description: OAC for CloudFront access to private S3 origin
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
+      Tags:
+        - Key: Project
+          Value: aws-crc-clean-build
+        - Key: Component
+          Value: cloudfront-oac
+        - Key: Layer
+          Value: edge
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
