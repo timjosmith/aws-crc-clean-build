@@ -20,13 +20,6 @@ Resources:
         OriginAccessControlOriginType: s3
         SigningBehavior: always
         SigningProtocol: sigv4
-      Tags:
-        - Key: Project
-          Value: aws-crc-clean-build
-        - Key: Component
-          Value: cloudfront-oac
-        - Key: Layer
-          Value: edge
 
   CloudFrontDistribution:
     Type: AWS::CloudFront::Distribution
@@ -39,7 +32,7 @@ Resources:
           - Id: S3Origin
             DomainName: !GetAtt SiteBucket.RegionalDomainName
             OriginAccessControlId: !Ref CloudFrontOAC
-            S3OriginConfig: {}
+            S3OriginConfig: { }
 
         DefaultCacheBehavior:
           TargetOriginId: S3Origin
@@ -55,6 +48,14 @@ Resources:
             QueryString: false
 
         PriceClass: PriceClass_100
+
+      Tags:
+        - Key: Project
+          Value: aws-crc-clean-build
+        - Key: Component
+          Value: cloudfront-distribution
+        - Key: Layer
+          Value: edge
 
 Outputs:
   SiteBucketName:
