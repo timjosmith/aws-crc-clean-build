@@ -8,4 +8,6 @@
 - CloudFront distribution deployed via CloudFormation using a private S3 origin and Origin Access Control
 - CloudFront lifecycle validated (create → delete → redeploy)
 - Stack lifecycle validated (deploy → delete → redeploy)
-
+- S3 bucket policy applied restricting read access to the CloudFront distribution only (OAC + SourceArn condition)
+- Direct S3 object access denied; CloudFront access verified using private origin
+- Control-plane to data-plane boundary crossed and validated
