@@ -11,3 +11,6 @@
 - S3 bucket policy applied restricting read access to the CloudFront distribution only (OAC + SourceArn condition)
 - Direct S3 object access denied; CloudFront access verified using private origin
 - Control-plane to data-plane boundary crossed and validated
+- ACM certificate issued (us-east-1) and attached to CloudFront
+- Custom hostname (crc.timjosmith.com) configured via CloudFront alias
+- Route 53 alias record created; HTTPS access verified end-to-end
