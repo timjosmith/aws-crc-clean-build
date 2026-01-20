@@ -45,6 +45,8 @@ Resources:
       DistributionConfig:
         Enabled: true
         DefaultRootObject: index.html
+        Aliases:
+          - crc.timjosmith.com
 
         Origins:
           - Id: S3Origin
@@ -66,6 +68,11 @@ Resources:
             QueryString: false
 
         PriceClass: PriceClass_100
+
+        ViewerCertificate:
+          AcmCertificateArn: arn:aws:acm:us-east-1:401907937551:certificate/2b71e9cd-4bd3-49f5-849f-c89c3b5e087d
+          SslSupportMethod: sni-only
+          MinimumProtocolVersion: TLSv1.2_2021
 
       Tags:
         - Key: Project
