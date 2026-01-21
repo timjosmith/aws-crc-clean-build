@@ -21,7 +21,7 @@ jobs:
       - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::401907937551:role/crc-clean-build-gha-deploy-role
+          role-to-assume: arn:aws:iam::401907937551:role/crc-clean-build-gha-deploy-role-cfn
           aws-region: eu-west-2
 
 #      - name: Validate CloudFormation template
