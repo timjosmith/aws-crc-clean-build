@@ -29,6 +29,23 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
 
+  VisitorCounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: crc-visitor-counter
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: CounterName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: CounterName
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      DeletionProtectionEnabled: true
+
   CloudFrontOAC:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -87,7 +104,10 @@ Outputs:
     Description: "S3 bucket name"
     Value: !Ref SiteBucket
 
+  VisitorCounterTableName:
+    Description: "Visitor counter DynamoDB table"
+    Value: !Ref VisitorCounterTable
+
   CloudFrontDomainName:
     Description: "CloudFront distribution domain"
     Value: !GetAtt CloudFrontDistribution.DomainName
-
