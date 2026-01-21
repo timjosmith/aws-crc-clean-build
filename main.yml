@@ -18,6 +18,19 @@ Resources:
                 token.actions.githubusercontent.com:aud: sts.amazonaws.com
               StringLike:
                 token.actions.githubusercontent.com:sub: "repo:timjosmith/aws-crc-clean-build:ref:refs/heads/main"
+      Policies:
+        - PolicyName: DynamoDBVisitorCounterLifecycle
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: DynamoDBTableLifecycle
+                Effect: Allow
+                Action:
+                  - dynamodb:CreateTable
+                  - dynamodb:DescribeTable
+                  - dynamodb:DeleteTable
+                  - dynamodb:ListTagsOfResource
+                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/crc-visitor-counter"
 
   SiteBucket:
     Type: AWS::S3::Bucket
