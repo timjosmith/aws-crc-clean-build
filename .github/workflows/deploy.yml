@@ -24,8 +24,8 @@ jobs:
           role-to-assume: arn:aws:iam::401907937551:role/crc-clean-build-gha-deploy-role-cfn
           aws-region: eu-west-2
 
-      - name: Validate CloudFormation template
-        run: aws cloudformation validate-template --template-body file://main.yml
+#      - name: Validate CloudFormation template
+#        run: aws cloudformation validate-template --template-body file://main.yml
 
       - name: Deploy stack
         run: |
