@@ -2,6 +2,23 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: "CRC clean build – S3-only skeleton"
 
 Resources:
+  CfnDeployRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: crc-clean-build-gha-deploy-role-cfn
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: !Sub "arn:aws:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com"
+            Action: "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                token.actions.githubusercontent.com:aud: sts.amazonaws.com
+              StringLike:
+                token.actions.githubusercontent.com:sub: "repo:timjosmith/aws-crc-clean-build:ref:refs/heads/main"
+
   SiteBucket:
     Type: AWS::S3::Bucket
     Properties:
