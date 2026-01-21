@@ -90,3 +90,4 @@ Outputs:
   CloudFrontDomainName:
     Description: "CloudFront distribution domain"
     Value: !GetAtt CloudFrontDistribution.DomainName
+
