@@ -91,6 +91,8 @@ Resources:
           KeyType: HASH
       SSESpecification:
         SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
       DeletionProtectionEnabled: true
 
   CloudFrontOAC:
