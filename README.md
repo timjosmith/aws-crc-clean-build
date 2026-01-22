@@ -12,7 +12,7 @@ The live site includes an additional Lambda-backed contact form.  This demonstra
 
 ### CI/CD bootstrap approach
 
-To avoid circular IAM dependencies when introducing OIDC-based deployments, the CI/CD pipeline was established using a staged bootstrap pattern.  A temporary deploy role with broader permissions was used only to create the CloudFormation stack and a new, CloudFormation-managed OIDC deploy role.  Once the new role had the minimum permissions required to manage the stack, the workflow was switched to assume it and the original bootstrap role was removed.  All long-term deployment permissions are therefore defined and managed exclusively through infrastructure-as-code.
+To avoid circular IAM dependencies when introducing OIDC-based deployments, the CI/CD pipeline was established using a staged bootstrap pattern.  A temporary deploy role with broader permissions was used only to create the CloudFormation stack and a new, CloudFormation-managed OIDC deploy role.  Once the new role had the minimum permissions required to manage the stack, the workflow was switched to assume it and the original bootstrap role was removed.  All long-term deployment permissions are therefore defined and managed exclusively through infrastructure-as-code. CloudFormation deployments are executed via a dedicated execution role passed from GitHub Actions using `--role-arn`, to avoid IAM self-mutation and enforce a strict deploy-role → execution-role control-plane boundary.
 
 ## Scope (intentional)
 
