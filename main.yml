@@ -19,19 +19,14 @@ Resources:
               StringLike:
                 token.actions.githubusercontent.com:sub: "repo:timjosmith/aws-crc-clean-build:ref:refs/heads/main"
       Policies:
-        - PolicyName: DynamoDBVisitorCounterLifecycle
+        - PolicyName: PassExecutionRole
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              - Sid: DynamoDBTableLifecycle
+              - Sid: AllowPassCfnExecutionRole
                 Effect: Allow
-                Action:
-                  - dynamodb:CreateTable
-                  - dynamodb:DescribeTable
-                  - dynamodb:DeleteTable
-                  - dynamodb:ListTagsOfResource
-                  - dynamodb:UpdateContinuousBackups
-                Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/crc-visitor-counter"
+                Action: iam:PassRole
+                Resource: arn:aws:iam::401907937551:role/crc-clean-build-cfn-exec
         - PolicyName: CloudFormationLifecycle
           PolicyDocument:
             Version: "2012-10-17"
