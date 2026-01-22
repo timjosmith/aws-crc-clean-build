@@ -33,7 +33,6 @@ jobs:
            --template-file main.yml \
            --stack-name crc-clean-build \
            --region eu-west-2 \
+           --role-arn arn:aws:iam::401907937551:role/crc-clean-build-cfn-exec \
            --capabilities CAPABILITY_NAMED_IAM \
-           --no-fail-on-empty-changeset
-        
-
+           --no-fail-on-empty-changeset   
