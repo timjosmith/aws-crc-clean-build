@@ -229,6 +229,13 @@ Resources:
         IntegrationUri: !GetAtt VisitorCounterFunction.Arn
         PayloadFormatVersion: "2.0"
 
+  VisitorCounterApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref VisitorCounterHttpApi
+      RouteKey: GET /count
+      Target: !Sub "integrations/${VisitorCounterApiIntegration}"
+
 Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
