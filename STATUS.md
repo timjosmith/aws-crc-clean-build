@@ -21,3 +21,7 @@
 - DynamoDB Point-in-Time Recovery (PITR) successfully enabled
 - Stack recovered from UPDATE_ROLLBACK_FAILED and now stable in UPDATE_COMPLETE
 - CI control plane now follows deploy-role → execution-role model
+- Lambda runtime layer added for visitor counter slice.
+- Dedicated Lambda execution role created with minimal DynamoDB and logging permissions.
+- Manual invocation verified; atomic counter increment confirmed.
+- Stack remains fully CloudFormation-managed and destroyable.
