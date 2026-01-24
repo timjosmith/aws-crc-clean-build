@@ -215,6 +215,11 @@ Resources:
                   "headers": {"Content-Type": "application/json"},
                   "body": json.dumps({"count": new_value}),
               }
+  VisitorCounterHttpApi:
+  Type: AWS::ApiGatewayV2::Api
+  Properties:
+    Name: !Sub "${AWS::StackName}-visitor-counter-api"
+    ProtocolType: HTTP
 
 Outputs:
   SiteBucketName:
