@@ -244,6 +244,13 @@ Resources:
         Principal: apigateway.amazonaws.com
         SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VisitorCounterHttpApi}/*/*"
 
+  VisitorCounterApiStage:
+      Type: AWS::ApiGatewayV2::Stage
+      Properties:
+        ApiId: !Ref VisitorCounterHttpApi
+        StageName: "$default"
+        AutoDeploy: true
+
 Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
