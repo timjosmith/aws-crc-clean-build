@@ -263,3 +263,7 @@ Outputs:
   CloudFrontDomainName:
     Description: "CloudFront distribution domain"
     Value: !GetAtt CloudFrontDistribution.DomainName
+
+  VisitorCounterApiUrl:
+    Description: Visitor counter HTTP API endpoint
+    Value: !Sub "https://${VisitorCounterHttpApi}.execute-api.${AWS::Region}.amazonaws.com"
