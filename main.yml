@@ -236,6 +236,14 @@ Resources:
       RouteKey: GET /count
       Target: !Sub "integrations/${VisitorCounterApiIntegration}"
 
+  VisitorCounterApiInvokePermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: !Ref VisitorCounterFunction
+        Action: lambda:InvokeFunction
+        Principal: apigateway.amazonaws.com
+        SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VisitorCounterHttpApi}/*/*"
+
 Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
