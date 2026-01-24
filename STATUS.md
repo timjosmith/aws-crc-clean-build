@@ -1,27 +1,35 @@
 ## Current state
 
-- Repository initialised with clean structure and licensing
-- CloudFormation template managed in version control
-- GitHub Actions configured with OIDC (no static AWS credentials)
-- Dedicated IAM deploy role scoped to repository and main branch and managed via CloudFormation
-- Separate CloudFormation execution role introduced to avoid IAM self-mutation
-- GitHub Actions now passes execution role to CloudFormation via --role-arn
-- Temporary bootstrap execution role used for recovery and initial handover
-- S3 bucket successfully deployed via CloudFormation
-- CloudFront distribution deployed via CloudFormation using a private S3 origin and Origin Access Control
-- CloudFront lifecycle validated (create → delete → redeploy)
-- Stack lifecycle validated (deploy → delete → redeploy)
-- S3 bucket policy applied restricting read access to the CloudFront distribution only (OAC + SourceArn condition)
-- Direct S3 object access denied; CloudFront access verified using private origin
-- Control-plane to data-plane boundary crossed and validated
-- ACM certificate issued (us-east-1) and attached to CloudFront
-- Custom hostname (crc.timjosmith.com) configured via CloudFront alias
-- Route 53 alias record created; HTTPS access verified end-to-end
-- DynamoDB visitor counter table created and stable
-- DynamoDB Point-in-Time Recovery (PITR) successfully enabled
-- Stack recovered from UPDATE_ROLLBACK_FAILED and now stable in UPDATE_COMPLETE
-- CI control plane now follows deploy-role → execution-role model
-- Lambda runtime layer added for visitor counter slice.
+- Repository initialised with clean structure and licensing.
+- CloudFormation template fully managed in version control.
+- GitHub Actions configured with OIDC (no static AWS credentials).
+- Dedicated IAM deploy role scoped to the repository and main branch, managed via CloudFormation.
+- Clear separation between deploy role (control plane) and runtime execution roles to avoid IAM self-mutation.
+- Temporary bootstrap execution role used solely for recovery; stack now stable and operating under the standard deploy-role model.
+
+### Frontend infrastructure
+- S3 bucket deployed via CloudFormation.
+- CloudFront distribution deployed via CloudFormation using a private S3 origin and Origin Access Control (OAC).
+- CloudFront lifecycle validated (create → delete → redeploy).
+- S3 bucket policy restricts read access to the CloudFront distribution only (OAC with SourceArn condition).
+- Direct S3 object access denied; CloudFront access verified using private origin.
+- ACM certificate issued in us-east-1 and attached to CloudFront.
+- Custom hostname (crc.timjosmith.com) configured via CloudFront alias.
+- Route 53 alias record created; HTTPS access verified end-to-end.
+
+### Backend and API
+- DynamoDB visitor counter table created and stable.
+- DynamoDB Point-in-Time Recovery (PITR) enabled.
+- Lambda runtime layer added for the visitor counter slice.
 - Dedicated Lambda execution role created with minimal DynamoDB and logging permissions.
-- Manual invocation verified; atomic counter increment confirmed.
-- Stack remains fully CloudFormation-managed and destroyable.
+- Lambda manually invoked and verified; atomic counter increment confirmed.
+- API Gateway (HTTP API) created and integrated with Lambda.
+- GET `/count` route deployed with scoped invoke permission.
+- Default API stage deployed with auto-deploy enabled.
+- CORS explicitly configured for browser access.
+- End-to-end path verified: API Gateway → Lambda → DynamoDB.
+
+### Overall
+- Stack lifecycle validated (deploy → delete → redeploy).
+- All infrastructure remains CloudFormation-managed and fully destroyable.
+- Backend slice complete; frontend site content migration and JavaScript wiring pending.
