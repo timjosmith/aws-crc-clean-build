@@ -74,23 +74,6 @@ Resources:
               StringEquals:
                 AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${CloudFrontDistribution}"
 
-  VisitorCounterTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: crc-visitor-counter
-      BillingMode: PAY_PER_REQUEST
-      AttributeDefinitions:
-        - AttributeName: CounterName
-          AttributeType: S
-      KeySchema:
-        - AttributeName: CounterName
-          KeyType: HASH
-      SSESpecification:
-        SSEEnabled: true
-      PointInTimeRecoverySpecification:
-        PointInTimeRecoveryEnabled: true
-      DeletionProtectionEnabled: true
-
   CloudFrontOAC:
     Type: AWS::CloudFront::OriginAccessControl
     Properties:
@@ -143,6 +126,53 @@ Resources:
           Value: cloudfront-distribution
         - Key: Layer
           Value: edge
+
+  VisitorCounterTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: crc-visitor-counter
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: CounterName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: CounterName
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+      DeletionProtectionEnabled: true
+
+  VisitorCounterFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Path: /
+      Policies:
+        - PolicyName: visitor-counter-lambda-basic
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # CloudWatch Logs
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+              # DynamoDB counter increment (atomic)
+              - Effect: Allow
+                Action:
+                  - dynamodb:UpdateItem
+                Resource: !GetAtt VisitorCounterTable.Arn
 
 Outputs:
   SiteBucketName:
