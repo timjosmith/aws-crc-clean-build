@@ -174,6 +174,48 @@ Resources:
                   - dynamodb:UpdateItem
                 Resource: !GetAtt VisitorCounterTable.Arn
 
+  VisitorCounterFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${AWS::StackName}-visitor-counter"
+      Runtime: python3.12
+      Handler: index.handler
+      Role: !GetAtt VisitorCounterFunctionRole.Arn
+      Timeout: 3
+      MemorySize: 128
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCounterTable
+          COUNTER_PK: "visits"
+      Code:
+        ZipFile: |
+          import os
+          import json
+          import boto3
+
+          ddb = boto3.client("dynamodb")
+
+          TABLE_NAME = os.environ["TABLE_NAME"]
+          COUNTER_PK = os.environ.get("COUNTER_PK", "visits")
+
+          def handler(event, context):
+              resp = ddb.update_item(
+                  TableName=TABLE_NAME,
+                  Key={"CounterName": {"S": COUNTER_PK}},
+                  UpdateExpression="ADD #v :inc",
+                  ExpressionAttributeNames={"#v": "value"},
+                  ExpressionAttributeValues={":inc": {"N": "1"}},
+                  ReturnValues="UPDATED_NEW",
+              )
+
+              new_value = int(resp["Attributes"]["value"]["N"])
+
+              return {
+                  "statusCode": 200,
+                  "headers": {"Content-Type": "application/json"},
+                  "body": json.dumps({"count": new_value}),
+              }
+
 Outputs:
   SiteBucketName:
     Description: "S3 bucket name"
