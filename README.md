@@ -8,7 +8,7 @@ This repository is a clean, self-contained implementation of the Cloud Resume Ch
 
 The project provisions a small serverless AWS stack that is fully destroyable and redeployable without manual intervention.  It is intentionally isolated from any existing live infrastructure and is not intended to replace a production website.
 
-The live site includes additional functionality (for example, a Lambda-backed contact form).  This demonstration stack instead focuses on a single minimal dynamic element (a visitor counter) in order to keep the architecture intentionally simple, auditable, and reviewable.
+The live site includes additional functionality (for example, a Lambda-backed contact form).  This demonstration stack instead focuses on a single minimal dynamic element (a visitor counter), in order to keep the architecture intentionally simple, auditable, and easy to review.
 
 ## CI/CD bootstrap approach
 
@@ -20,24 +20,23 @@ All long-term deployment permissions are therefore defined and managed exclusive
 
 ## Scope (intentional)
 
-- Single environment
-- Infrastructure as Code using CloudFormation
-- CI/CD via GitHub Actions with OIDC
-- Short-lived credentials only
-- Safe destroy-and-rebuild workflow
+- Single environment  
+- Infrastructure as Code using CloudFormation  
+- CI/CD via GitHub Actions with OIDC  
+- Short-lived credentials only  
+- Safe destroy-and-rebuild workflow  
 
 ## Out of scope
 
-- Reuse of existing production resources
-- Multi-environment deployment
-- Feature parity with the live site
-- Advanced security hardening or optimisation
+- Reuse of existing production resources  
+- Multi-environment deployment  
+- Feature parity with the live site  
+- Advanced security hardening or optimisation  
 
 ## Current status
 
-See `STATUS.md` for the current deployment state and known limitations.
+See `STATUS.md` for the stack’s current deployment state and known limitations.
 
 ## Notes
 
-This repository is a demonstration artefact created for learning and assessment purposes.  It prioritises clarity, safety, and reproducibility over completeness.
-
+This repository is a demonstration created for learning and assessment purposes.  It prioritises clarity, safety, and reproducibility over completeness.
