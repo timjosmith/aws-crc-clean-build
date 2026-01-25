@@ -32,4 +32,4 @@
 ### Overall
 - Stack lifecycle validated (deploy → delete → redeploy).
 - All infrastructure remains CloudFormation-managed and fully destroyable.
-- Backend slice complete; frontend site content migration and JavaScript wiring pending.
+- Minimal showcase site deployed via CloudFront with JavaScript integration to the visitor counter; end-to-end functionality verified.
