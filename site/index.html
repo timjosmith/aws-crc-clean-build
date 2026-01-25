@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Cloud Resume Challenge – Demo</title>
+  </head>
+
+  <body>
+    <h1>Cloud Resume Challenge</h1>
+
+    <p>
+      Visitor count:
+      <strong><span id="visitor-count">–</span></strong>
+    </p>
+
+    <p>
+      This is a minimal demonstration site for the Cloud Resume Challenge.
+      It exists to show a clean, reproducible AWS implementation using
+      CloudFormation and OIDC-based CI/CD.
+    </p>
+
+    <p>
+      My full professional website is available at
+      <a href="https://resume.timjosmith.com" target="_blank" rel="noopener">
+        resume.timjosmith.com
+      </a>.
+    </p>
+
+    <script>
+      async function updateVisitorCount() {
+        try {
+          const response = await fetch("https://08ec4dub2b.execute-api.eu-west-2.amazonaws.com/count");
+          const data = await response.json();
+          document.getElementById("visitor-count").textContent = data.count;
+        } catch (error) {
+          console.error("Visitor counter error:", error);
+        }
+      }
+
+      updateVisitorCount();
+    </script>
+  </body>
+</html>
+
