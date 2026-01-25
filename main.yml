@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "CRC clean build – S3-only skeleton"
+Description: "Cloud Resume Challenge clean build – AWS serverless demonstration stack"
 
 Resources:
   CfnDeployRole:
