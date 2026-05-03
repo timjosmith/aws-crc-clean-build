@@ -1,14 +1,34 @@
 # aws-crc-clean-build
 
-Clean, self-contained Cloud Resume Challenge implementation using AWS CloudFormation and GitHub Actions with OIDC.  Demonstrates reproducible deployment of a small serverless architecture, with an emphasis on Infrastructure as Code, CI/CD, and safe destroy-and-rebuild workflows.
+Serverless web application on AWS demonstrating Infrastructure as Code and CI/CD using CloudFormation and GitHub Actions with OIDC.
 
-## Purpose
+## Architecture
 
-This repository is a clean, self-contained implementation of the Cloud Resume Challenge.  It demonstrates practical AWS delivery using CloudFormation and GitHub Actions with OIDC-based authentication.
+<p align="center">
+  <img src="architecture_diagram.png" width="800" alt="Serverless AWS architecture diagram showing CloudFront, S3, API Gateway, Lambda, DynamoDB, GitHub Actions, OIDC and CloudFormation" />
+</p>
 
-The project provisions a small serverless AWS stack that is fully destroyable and redeployable without manual intervention.  It is intentionally isolated from any existing live infrastructure and is not intended to replace a production website.
+## Application Overview
 
-The live site includes additional functionality (for example, a Lambda-backed contact form).  This demonstration stack instead focuses on a single minimal dynamic element (a visitor counter), in order to keep the architecture intentionally simple, auditable, and easy to review.
+This project implements a simple serverless web application on AWS.
+
+A static frontend is delivered via Amazon CloudFront and S3.  Client-side JavaScript invokes a REST API exposed via API Gateway.  The API triggers a Lambda function which updates and retrieves a visitor count stored in DynamoDB.
+
+Infrastructure is defined using AWS CloudFormation and deployed through a CI/CD pipeline using GitHub Actions with OIDC authentication, eliminating the need for long-lived AWS credentials.
+
+## Key Features
+
+- Serverless architecture using API Gateway, Lambda, and DynamoDB  
+- Static frontend delivered via CloudFront and S3  
+- Infrastructure as Code using CloudFormation  
+- CI/CD pipeline using GitHub Actions  
+- Secure deployment using OIDC (no long-lived AWS credentials)  
+
+## Implementation Notes
+
+This repository provides a clean, self-contained implementation of the Cloud Resume Challenge using CloudFormation and GitHub Actions with OIDC.
+
+It demonstrates reproducible deployment of a small serverless architecture using Infrastructure as Code and CI/CD.
 
 ## CI/CD bootstrap approach
 
